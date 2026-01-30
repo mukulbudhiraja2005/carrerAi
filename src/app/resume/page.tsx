@@ -121,6 +121,9 @@ export default function ResumePage() {
 
   // ================= DOWNLOAD PDF =================
   const downloadPDF = async () => {
+    // 🔒 SSR / Vercel safety
+    if (typeof window === "undefined") return;
+
     const element = document.getElementById("resume-preview");
 
     if (!element) {
@@ -128,7 +131,7 @@ export default function ResumePage() {
       return;
     }
 
-    const html2pdf = (await import("html2pdf.js/dist/html2pdf.min.js")).default;
+    const html2pdf: any = (await import("html2pdf.js/dist/html2pdf.min.js")).default;
 
     const opt = {
       margin: 0,
@@ -146,7 +149,6 @@ export default function ResumePage() {
     <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black py-14">
       <div className="max-w-7xl mx-auto px-6 flex justify-center">
 
-        {/* ---------------- STEP 1 ---------------- */}
         {step === 1 && (
           <div className="text-center space-y-8 mt-20">
             <h1 className="text-5xl font-bold text-white">Want to build your resume?</h1>
@@ -169,7 +171,6 @@ export default function ResumePage() {
           </div>
         )}
 
-        {/* ---------------- STEP 2 ---------------- */}
         {step === 2 && (
           <div className="w-full mt-10">
             <button onClick={goBack} className="text-zinc-400 hover:text-white mb-6">
@@ -198,7 +199,6 @@ export default function ResumePage() {
           </div>
         )}
 
-        {/* ---------------- STEP 3 ---------------- */}
         {step === 3 && (
           <div className="text-center space-y-8 mt-20">
             <button onClick={goBack} className="text-zinc-400 hover:text-white">
@@ -218,13 +218,9 @@ export default function ResumePage() {
           </div>
         )}
 
-        {/* ---------------- STEP 4 ---------------- */}
         {step === 4 && (
           <div className="grid lg:grid-cols-2 gap-14 items-start w-full">
-
-            {/* FORM PANEL */}
             <div className="bg-zinc-900/80 backdrop-blur border border-zinc-800 rounded-3xl p-8 space-y-6 shadow-2xl">
-
               <button onClick={goBack} className="text-zinc-400 hover:text-white text-sm">
                 ← Back
               </button>
@@ -249,7 +245,6 @@ export default function ResumePage() {
               </div>
             </div>
 
-            {/* PREVIEW + DOWNLOAD */}
             <div className="flex flex-col items-center gap-4">
               <div id="resume-preview" className="bg-white w-[794px] min-h-[1123px] p-10 border">
                 <ResumePreview {...form} />
@@ -270,11 +265,9 @@ export default function ResumePage() {
         )}
       </div>
 
-      {/* ================= PAYMENT POPUP ================= */}
       {showPayment && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-zinc-900 p-8 rounded-2xl w-[350px] text-center space-y-4 border border-zinc-700">
-
             <h2 className="text-xl font-bold">Upgrade to Premium !!</h2>
             <p className="text-zinc-400 text-sm">
               Unlock resume download & premium features
